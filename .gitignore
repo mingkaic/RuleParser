@@ -43,5 +43,5 @@ pkg/
 src/
 
 .DS_Store
-~$*.doc*
-~$*.xls*
+*.doc*
+*.xls*
