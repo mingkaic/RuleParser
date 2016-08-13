@@ -1,0 +1,3 @@
+entireanon = "simple" | "bad simple" | simple;
+simple = "[" entireanon "]";
+start = simple;
