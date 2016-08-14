@@ -65,7 +65,7 @@ class symbol_rep {
 					wrap = "(?:" + wrap + ")";
 					break;
 				case _OPTIONAL:
-					wrap = "[" + wrap + "]";
+					wrap = "(?:" + wrap + ")?";
 					break;
 				case _REPOPT:
 					wrap = "(?:" + wrap + ")*";
@@ -93,7 +93,11 @@ class symbol_rep {
 		// represent as CFG
 		virtual void flatten (vector<production*>&) = 0;
 		// a symbol is first order if it holds no recursions in its definition
-		// that is a first order symbol can be represented in regex
+		// that is all first order symbol can be represented in regex
+		// HOWEVER not all non-first order symbols cannot be represented in regex
+		// for example: A -> "tok" A | "tok2"
+		// which can be represented as "(?:tok)*tok2"
+		// consider improvements
 		virtual bool first_order (void) = 0;
 		virtual bool first_order (size_t) { return true; }
 		virtual bool iter (function<bool(symbol_rep*)> notused) { return true; }
