@@ -1,0 +1,40 @@
+letter = regex("[A-Za-z_]");
+decimal = regex("[0-9]");
+space = regex("(?: )*");
+
+START = "start";
+STRING = space regex("\"(?:[^\\\"\n]|\\[abtnvfr\"])*\"") space;
+VAR = space letter {letter | decimal} space;
+ALTER = space "|" space;
+ASSIGN = space "=" space;
+REGEX = "regex";
+LPAREN_NULL = "(?:";
+LPAREN = "(";
+RPAREN = ")";
+LSB = "[";
+RSB = "]";
+LCB = "{";
+RCB = "}";
+RCBPLUS = "}+";
+END = ";";
+REGEXFUNC = REGEX space LPAREN space STRING space RPAREN;
+
+endpoint = STRING | VAR | REGEXFUNC;
+endpoint = LSB rvalue RSB;
+endpoint = LCB rvalue RCBPLUS;
+endpoint = LCB rvalue RCB;
+endpoint = LPAREN_NULL rvalue RPAREN;
+endpoint = LPAREN rvalue RPAREN;
+alterop = mid ALTER;
+alterop = mid ALTER ALTER;
+alterop = mid ALTER END;
+mid = endpoint | (?: alterop endpoint);
+rvalue = mid | (rvalue mid);
+
+stmt = START ASSIGN rvalue END;
+stmt = VAR ASSIGN rvalue END;
+stmt = VAR ASSIGN END;
+
+program = {stmt}+;
+
+start = program;

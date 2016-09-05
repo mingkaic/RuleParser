@@ -27,7 +27,7 @@ int main(int argc, char* argv[]) {
 		throw std::runtime_error("input code file not found");
 	}
 	
-	// top->parser->parse(code);
+	top->parse->parse(code);
 
 	delete top->parse;
 	delete top;

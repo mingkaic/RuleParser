@@ -1,0 +1,43 @@
+// TRANSLATION GRAMMAR(s): Leibniz' notation/ et al translate to BASE GRAMMAR
+// BASE GRAMMAR: TODO - DEFINE MATH LANGUAGE
+// this file is written in BASE GRAMMAR (name pending)
+// this file defines the basic properties of differentiation
+
+// linearity property
+for h(x) = a * f(x) + b * g(x):
+	h'(x) = a * f'(x) + b * g'(x)
+
+// product rule
+for h(x) = f(x) * g(x):
+	h'(x) = f'(x) * g(x) + f(x) * g'(x)
+
+// chain rule
+for h(x) = f(g(x)):
+	h'(x) = f'(g(x)) * g'(x)
+
+// inverse function rule
+for g(f(x)) = x and f(g(y)) = y:
+	g'(x) = 1 / (f'(x) * g(x))
+
+// elementary power rule
+for f(x) = x^n:
+	f'(x) = n * x^(n-1)
+
+// reciprocal rule
+for h(x) = 1 / f(x):
+	h'(x) = - f'(x) / (f(x)^2)
+
+// quotient rule
+for h(x) = f(x) / g(x):
+	h'(x) = (f'(x) * g(x) - g'(x) * f(x)) / (g(x)^2
+
+// generalized power rule
+// ... later
+
+// exponential
+for h(x) = e^f(x):
+	h'(x) = f'(x) * e^f(x)
+
+// logs
+for h(x) = log(c, x) and c > 0 and c != 1:
+	h'(x) = 1 / (x * ln(c))

@@ -1,0 +1,12 @@
+// c are constants, x are variables
+
+f(x) = x + f(x)
+f(x) = x - f(x)
+f(x) = x * f(x)
+f(x) = x / f(x)
+f(x) = x ^ f(x)
+f(x) = c + f(x)
+f(x) = c - f(x)
+f(x) = c * f(x)
+f(x) = c / f(x)
+f(x) = c ^ f(x)

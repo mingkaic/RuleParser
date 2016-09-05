@@ -45,3 +45,4 @@ src/
 .DS_Store
 *.doc*
 *.xls*
+*.xml

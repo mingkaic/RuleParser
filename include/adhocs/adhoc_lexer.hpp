@@ -1,5 +1,5 @@
 //
-//  static_lexer.hpp
+//  adhoc_lexer.hpp
 //
 //  description: tokenizes rules specified by metarules.txt
 //
@@ -8,22 +8,18 @@
 //
 
 #pragma once
-#ifndef __STATIC_LEXER__
-#define __STATIC_LEXER__
+#ifndef __ADHOC_LEXER__
+#define __ADHOC_LEXER__
 
-#include <iostream>
-#include <list>
-#include <set>
-#include <map>
 #include <queue>
 #include <cstdio>
 #include <stdexcept>
 #include <sstream> 
 #include <string>
 
-using namespace std;
+#include "../symbols.hpp"
 
-#define IN_MAP(tmap, t) tmap.end() != tmap.find(t)
+namespace adhoc {
 
 enum TOKEN {
 	VAR,
@@ -33,6 +29,7 @@ enum TOKEN {
 	ASSIGN,
 	REGEX,
 	LPAREN,
+	LPAREN_NULL,
 	RPAREN,
 	LSB,
 	RSB,
@@ -50,6 +47,7 @@ enum TOKEN {
 	RVALUE,
 	MID,
 	BASE,
+	CAPTURE,
 	GROUP,
 	OPTION,
 	REP0,
@@ -58,26 +56,13 @@ enum TOKEN {
 	ACCEPT,
 };
 
-class token {
-	TOKEN tval;
-public:
-	string content;
-	token (void) {}
-	token (TOKEN tval) : tval(tval) {}
-	token (TOKEN tval, string content) : tval(tval), content(content) {}
-	virtual ~token (void) {}
-	virtual void set_tok (TOKEN tk) { tval = tk; }
-	virtual TOKEN get_tok (void) { return tval; }
-};
-
-
-class adhoc_lexer {
+class adhoc_lexer : public lexer {
 	private:
 		// super state is a collection of tokens sharing similar behavior
 		// e.g.: LSIDE represent tokens LPAREN, LSB, and LCB
 		struct superstate {
-			map<TOKEN, superstate*> nexts;
-			set<TOKEN> CONCAT_trans;
+			std::unordered_map<size_t, superstate*> nexts;
+			std::unordered_set<size_t> CONCAT_trans;
 			TOKEN tval;
 			superstate (TOKEN tval) : tval(tval) {}
 		};
@@ -90,13 +75,10 @@ class adhoc_lexer {
 		static void adhoc_construct (void);
 
 		// traverse the graph while appending to toks
-		void step_state (TOKEN, string&);
+		void step_state (TOKEN, std::string&);
 
 		// throw errors
-		void error_throw (string);
-
-		// token collection
-		list<token*> toks;
+		void error_throw (std::string);
 
 		size_t lineno = 0;
 		size_t colno = 0;
@@ -108,10 +90,10 @@ class adhoc_lexer {
 		static void adhoc_delete (void);
 
 		adhoc_lexer (void) { adhoc_construct(); }
-		~adhoc_lexer (void) { for (token* t : toks) { delete t; } }
+		virtual ~adhoc_lexer (void) {}
 
 		// lex given input filename
-		void lex (string);
+		void lex (std::istream&);
 
 		// getter
 		bool empty (void) const { return toks.empty(); }
@@ -124,4 +106,6 @@ class adhoc_lexer {
 		}
 };
 
-#endif /* __STATIC_LEXER__ */
+}
+
+#endif /* __ADHOC_LEXER__ */
